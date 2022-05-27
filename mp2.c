@@ -1,7 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-// #include <gmp.h>
+
+
+long modExpo(long base, long exp, long mod){
+    long result = 1;
+    while(exp > 0){
+        if(exp % 2 == 1){
+            result = (result * base) % mod;
+        }
+        exp = exp >> 1;
+        base = (base * base) % mod;
+    }
+    return result;
+}
 
 long get_d(long e, long phi){
     for (int i = 1; i < 99999999; i++){
@@ -11,20 +23,7 @@ long get_d(long e, long phi){
     }
 }
 
-// NEED TO STORE pow() VALUES IN VERY BIG INTEGER
-long encrypt(long m, long e, long n){
-    long encrypted = pow(11029, 293);
-    printf("Encrypted: %ld\n", encrypted);
-    long answer = encrypted % n;
-    return answer;
-}
 
-// NEED TO STORE pow() VALUES IN VERY BIG INTEGER
-long decrypt(long c, long d, long n){
-    long decrypted = pow(c, d);
-    long answer = decrypted % n;
-    return answer;
-}
 
 int main(){
     char pq[33];
@@ -66,10 +65,10 @@ int main(){
 
 
         if(!strcmp(action,"encrypt")){          // encrypt if action is encrypt
-            printf("%ld\n", encrypt(m, e, n));
+            printf("%ld\n", modExpo(m, e, n));
         }
         else if(!strcmp(action,"decrypt")){     // decrypt if action is decrypt
-            printf("%ld\n", decrypt(m, d, n));
+            printf("%ld\n", modExpo(m, d, n));
         }
     }
 
